@@ -158,7 +158,19 @@ public final class HttpSender {
         try {
             ObjectNode objectNode = JSONUtils.parseObject(bodyParams);
             //set msg content field
-            objectNode.put(contentField, msg);
+            String[] fields = contentField.split("/");
+            int fieldsLength = fields.length;
+            if (fieldsLength > 1) {
+                ObjectNode subNode = objectNode.with(fields[0]);
+                for (int i = 1; i < fieldsLength - 1; i++) {
+                    subNode = subNode.with(fields[i]);
+                }
+                subNode.put(fields[fieldsLength - 1], msg);
+            } else {
+                objectNode.put(contentField, msg);
+            }
+            String js = JSONUtils.toJsonString(objectNode);
+            System.out.println(js);
             StringEntity entity = new StringEntity(JSONUtils.toJsonString(objectNode), DEFAULT_CHARSET);
             ((HttpPost) httpRequest).setEntity(entity);
         } catch (Exception e) {

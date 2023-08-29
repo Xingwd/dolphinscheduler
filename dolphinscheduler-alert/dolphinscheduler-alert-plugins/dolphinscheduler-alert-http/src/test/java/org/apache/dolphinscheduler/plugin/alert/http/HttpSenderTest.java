@@ -39,4 +39,17 @@ public class HttpSenderTest {
         AlertResult alertResult = httpSender.send("Fault tolerance warning");
         Assert.assertEquals("true", alertResult.getStatus());
     }
+
+    @Test
+    public void sendTest2() {
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put(HttpAlertConstants.NAME_URL, "http://www.baidu.com");
+        paramsMap.put(HttpAlertConstants.NAME_REQUEST_TYPE, "POST");
+        paramsMap.put(HttpAlertConstants.NAME_HEADER_PARAMS, "{\"Content-Type\":\"application/json\"}");
+        paramsMap.put(HttpAlertConstants.NAME_BODY_PARAMS, "{\"msgtype\": \"markdown\"}");
+        paramsMap.put(HttpAlertConstants.NAME_CONTENT_FIELD, "markdown/content");
+        HttpSender httpSender = new HttpSender(paramsMap);
+        AlertResult alertResult = httpSender.send("Fault tolerance warning");
+        Assert.assertEquals("true", alertResult.getStatus());
+    }
 }
